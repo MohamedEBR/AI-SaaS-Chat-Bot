@@ -1,11 +1,8 @@
-import express from "express";
-
-const app = express();
-
-
-//middlewares
-app.use(express.json());
+import app from "./app.js";
+import { connectToDataBase } from "./db/connection.js";
 
 //connections and listeners
-
-app.listen(5000, () => console.log(`Server is listening at port 5000`))
+connectToDataBase().then(() => {
+    app.listen(5000, () => console.log(`Server is listening at port 5000`))
+})
+.catch((err) => console.log(err));
