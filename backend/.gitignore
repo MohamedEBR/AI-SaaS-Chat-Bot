@@ -1,6 +1,7 @@
 # Dependency directories
-node_modules/
+/node_modules
 /client/node_modules/
+node_modules/
 
 # TypeScript compiled JavaScript files
 /dist
