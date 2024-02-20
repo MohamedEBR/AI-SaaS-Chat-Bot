@@ -9,3 +9,7 @@ html, body {
   color: white;
   font-family: 'Roboto Slab', sans-serif;
 }
+
+.image-inverted{
+  filter: invert(100%);
+}
