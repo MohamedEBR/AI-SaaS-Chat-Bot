@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useState, useEffect, useContext } from 'react'
+import { loginUser } from '../helpers/api-connectors';
 
 type User = {
     name: string;
@@ -23,7 +24,13 @@ export const AuthProvider = ({children} : { children : ReactNode}) => {
       
     }, [])
     
-    const login = async (email: string, password: string) => {}
+    const login = async (email: string, password: string) => {
+        const data = await loginUser(email, password);
+        if (data){
+            setUser({email: data.email, name: data.name});
+            setIsLoggedIn(true);
+        } 
+    }
     const signup = async (email: string, password: string, name : string) => {}
     const logout = async () => {}
 
@@ -38,4 +45,5 @@ export const AuthProvider = ({children} : { children : ReactNode}) => {
 
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext)

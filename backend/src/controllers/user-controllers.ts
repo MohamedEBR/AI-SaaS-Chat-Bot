@@ -57,7 +57,7 @@ export const userLogin = async (
       signed: true
     })
     
-    return res.status(200).json({ message: "OK", id: user._id.toString() });
+    return res.status(200).json({ message: "OK", name: user.name, email: user.email});
   } catch (err) {
     console.log(err);
     return res.status(200).json({ message: "ERROR", cause: err.message });
@@ -104,7 +104,7 @@ export const userSignup = async (
     })
     
     
-    return res.status(201).json({ message: "OK", id: user._id.toString() });
+    return res.status(201).json({ message: "OK", name: user.name, email: user.email });
   } catch (err) {
     console.log(err);
     return res.status(200).json({ message: "ERROR", cause: err.message });
