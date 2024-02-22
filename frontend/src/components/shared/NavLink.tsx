@@ -8,7 +8,15 @@ type Props = {
     onClick?: () => Promise<void>;
 }
 const NavLink = (props: Props) => {
-  return <Link to={props.to} style={{  color: props.textColor, background: props.bg }}>{props.text}</Link>
+  return <Link 
+  className="nav-link"
+  to={props.to} 
+  style={{  
+    color: props.textColor, 
+    background: props.bg 
+    }}>
+        {props.text}
+        </Link>
 }
 
 export default NavLink
