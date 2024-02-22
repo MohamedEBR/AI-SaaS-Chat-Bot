@@ -38,26 +38,27 @@ export const userLogin = async (
     }
 
     res.clearCookie(COOKIE_NAME, {
-      httpOnly : true,
-      domain : "localhost",
-      signed : true,
-      path: "/"
-    })
-
+      httpOnly: true,
+      domain: "localhost",
+      signed: true,
+      path: "/",
+    });
 
     const token = createToken(user._id.toString(), user.email, "7d");
     const expires = new Date();
-    expires.setDate(expires.getDate() + 7)
+    expires.setDate(expires.getDate() + 7);
 
     res.cookie(COOKIE_NAME, token, {
-      path: "/", 
-      domain : "localhost", 
+      path: "/",
+      domain: "localhost",
       expires,
       httpOnly: true,
-      signed: true
-    })
-    
-    return res.status(200).json({ message: "OK", name: user.name, email: user.email});
+      signed: true,
+    });
+
+    return res
+      .status(200)
+      .json({ message: "OK", name: user.name, email: user.email });
   } catch (err) {
     console.log(err);
     return res.status(200).json({ message: "ERROR", cause: err.message });
@@ -81,32 +82,68 @@ export const userSignup = async (
       password: hashedPassword,
     });
     await user.save();
-    
+
     // create token and store cookies
     res.clearCookie(COOKIE_NAME, {
-      httpOnly : true,
-      domain : "localhost",
-      signed : true,
-      path: "/"
-    })
+      httpOnly: true,
+      domain: "localhost",
+      signed: true,
+      path: "/",
+    });
 
-    
     const token = createToken(user._id.toString(), user.email, "7d");
     const expires = new Date();
-    expires.setDate(expires.getDate() + 7)
+    expires.setDate(expires.getDate() + 7);
 
     res.cookie(COOKIE_NAME, token, {
-      path: "/", 
-      domain : "localhost", 
+      path: "/",
+      domain: "localhost",
       expires,
       httpOnly: true,
-      signed: true
-    })
-    
-    
-    return res.status(201).json({ message: "OK", name: user.name, email: user.email });
+      signed: true,
+    });
+
+    return res
+      .status(201)
+      .json({ message: "OK", name: user.name, email: user.email });
   } catch (err) {
     console.log(err);
     return res.status(200).json({ message: "ERROR", cause: err.message });
   }
-}
+};
+
+export const verifyUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    //user login
+    const user = await User.findById(res.locals.jwtData.id );
+    if (!user) {
+      return res.status(401).send("User not Registered OR Token Malfunction");
+    }
+    if (user._id.toString() !== res.locals.jwtData.id) {
+      return res.status(401).send("Permissions don't match");
+    }
+
+    console.log(user._id.toString(), res.locals.jwtData.id)
+
+
+    // res.clearCookie(COOKIE_NAME, {
+    //   httpOnly: true,
+    //   domain: "localhost",
+    //   signed: true,
+    //   path: "/",
+    // });
+
+
+
+    return res
+      .status(200)
+      .json({ message: "OK", name: user.name, email: user.email });
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({ message: "ERROR", cause: err.message });
+  }
+};
