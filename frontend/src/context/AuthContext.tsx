@@ -20,7 +20,7 @@ export const AuthProvider = ({children} : { children : ReactNode}) => {
 
     useEffect(() => {
       //fetch the current user if cookies are valid then skip login
-    
+        
       
     }, [])
     
