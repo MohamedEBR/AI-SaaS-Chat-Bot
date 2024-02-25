@@ -4,6 +4,7 @@ import { IoMdSend } from "react-icons/io"
 import { useRef, useState } from "react"
 import { useAuth } from "../context/AuthContext"
 import ChatItem from "../components/chat/ChatItem"
+import { sendChatRequest } from "../helpers/api-connectors"
 
 // const chatMessages = [
 //   {"role" : "user", "content" : "how many fingers do I hold"},
@@ -27,15 +28,16 @@ const Chat = () => {
   
   const handleSubmit = async () => {
     const content = inputRef.current?.value as string;
-
-    if (inputRef.current && inputRef) {
+    if (inputRef && inputRef.current) {
       inputRef.current.value = "";
     }
-
-    const newMessage: Message = {role: "user", content};
-    setChatMessages((prev) => [...prev, newMessage])
-
-  }
+    const newMessage: Message = { role: "user", content };
+    setChatMessages((prev) => [...prev, newMessage]);
+    
+    const chatData = await sendChatRequest(content);
+    setChatMessages([...chatData.chats]);
+    //
+  };
 
   return <Box sx={{
     display: "flex",
