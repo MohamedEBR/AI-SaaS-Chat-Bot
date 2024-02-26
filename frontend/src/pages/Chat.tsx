@@ -4,7 +4,7 @@ import { IoMdSend } from "react-icons/io"
 import {  useLayoutEffect, useRef, useState } from "react"
 import { useAuth } from "../context/AuthContext"
 import ChatItem from "../components/chat/ChatItem"
-import { getUserChats, sendChatRequest } from "../helpers/api-connectors"
+import { deleteUserChats, getUserChats, sendChatRequest } from "../helpers/api-connectors"
 import toast from "react-hot-toast"
 
 
@@ -38,7 +38,7 @@ const Chat = () => {
       toast.loading("Loading Chats", {id : "chat-loading"});
       getUserChats().then((data) => {
         setChatMessages([...data.chats]);
-        toast.success("Loading Chats", {id : "chat-loading"});
+        toast.success("Loaded Chats Successfully", {id : "chat-loading"});
       }).catch((err) => {
         console.log(err);
         toast.error("Loading Chats Failed", {id : "chat-loading"});
@@ -46,6 +46,17 @@ const Chat = () => {
     }
   }, [auth])
   
+  const handleDeleteChats = async () => {
+    try {
+      toast.loading("Deleting Chats", {id : "chat-deleting"});
+      await deleteUserChats();
+      setChatMessages([]);
+      toast.success("Deleted Chats Successfully", {id : "chat-deleting"});
+    } catch (err) {
+      console.log(err);
+      toast.error("Deleting Chats Failed", {id : "chat-deleting"});
+    }
+  }
   return <Box sx={{
     display: "flex",
     flex: 1,
@@ -93,7 +104,9 @@ const Chat = () => {
               You can some questions related to Knowledge, Business, Advices, Education,
               etc. But avoid sharing personal information.
             </Typography>
-            <Button sx={{
+            <Button 
+            onClick={handleDeleteChats}
+            sx={{
               width: "200px",
               my : "auto",
               color:"white",
@@ -139,6 +152,7 @@ const Chat = () => {
           scrollBehavior: "smooth",
         }}>
           {chatMessages.map((chat, index) => (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-ignore
           <ChatItem content={chat.content} role={chat.role} key={index} />
           ))}
