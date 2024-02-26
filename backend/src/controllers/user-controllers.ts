@@ -127,7 +127,6 @@ export const verifyUser = async (
       return res.status(401).send("Permissions don't match");
     }
 
-    console.log(user._id.toString(), res.locals.jwtData.id)
 
 
     // res.clearCookie(COOKIE_NAME, {
@@ -147,3 +146,39 @@ export const verifyUser = async (
     return res.status(200).json({ message: "ERROR", cause: err.message });
   }
 };
+
+export const userLogout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    //user login
+    const user = await User.findById(res.locals.jwtData.id );
+    if (!user) {
+      return res.status(401).send("User not Registered OR Token Malfunction");
+    }
+    if (user._id.toString() !== res.locals.jwtData.id) {
+      return res.status(401).send("Permissions don't match");
+    }
+
+
+
+    res.clearCookie(COOKIE_NAME, {
+      httpOnly: true,
+      domain: "localhost",
+      signed: true,
+      path: "/",
+    });
+
+
+
+    return res
+      .status(200)
+      .json({ message: "OK", name: user.name, email: user.email });
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({ message: "ERROR", cause: err.message });
+  }
+};
+

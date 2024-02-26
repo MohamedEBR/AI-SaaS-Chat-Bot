@@ -49,3 +49,13 @@ export const checkAuthStatus = async () => {
     const data = await res.data;
     return data;
   };
+
+  export const logoutUser = async () => {
+    
+    const res = await axios.get("/user/logout");
+    if (res.status !== 200) {
+      throw new Error("Unable to logout user");
+    }
+    const data = await res.data;
+    return data;
+  };
