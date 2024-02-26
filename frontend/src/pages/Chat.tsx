@@ -1,19 +1,12 @@
 import { Avatar, Box, Button, Typography, IconButton} from "@mui/material"
 import { red } from "@mui/material/colors"
 import { IoMdSend } from "react-icons/io"
-import { useRef, useState } from "react"
+import {  useLayoutEffect, useRef, useState } from "react"
 import { useAuth } from "../context/AuthContext"
 import ChatItem from "../components/chat/ChatItem"
-import { sendChatRequest } from "../helpers/api-connectors"
+import { getUserChats, sendChatRequest } from "../helpers/api-connectors"
+import toast from "react-hot-toast"
 
-// const chatMessages = [
-//   {"role" : "user", "content" : "how many fingers do I hold"},
-// {"role" : "assistant", "content" : "You have 5 fingers"},
-// {"role" : "user", "content" : "how many fingers do I hold"},
-// {"role" : "assistant", "content" : "You have 5 fingers"},
-// {"role" : "user", "content" : "how many fingers do I hold"},
-// {"role" : "assistant", "content" : "You have 5 fingers"},
-// ]
 
 type Message = {
   role: "user" | "assistant"
@@ -39,6 +32,20 @@ const Chat = () => {
     //
   };
 
+
+  useLayoutEffect(() => {
+    if(auth?.isLoggedIn && auth.user){
+      toast.loading("Loading Chats", {id : "chat-loading"});
+      getUserChats().then((data) => {
+        setChatMessages([...data.chats]);
+        toast.success("Loading Chats", {id : "chat-loading"});
+      }).catch((err) => {
+        console.log(err);
+        toast.error("Loading Chats Failed", {id : "chat-loading"});
+      });
+    }
+  }, [auth])
+  
   return <Box sx={{
     display: "flex",
     flex: 1,
