@@ -3,9 +3,12 @@ import CustomizedInput from "../components/shared/CustomizedInput"
 import { IoIosLogIn } from "react-icons/io"
 import { useAuth } from "../context/AuthContext"
 import toast from "react-hot-toast"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
   const auth = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +25,14 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    if(auth?.user){
+       return navigate("/chat")
+    }
+    return () => { 
+    }
+  }, [auth])
+  
   return (
     <Box width={'100%'} height={'100%'} display='flex'flex={1} >
       <Box padding={8}  mt={8} display={{md:"flex", sm :"none", xs: "none"}}>
