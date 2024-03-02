@@ -56,7 +56,8 @@ const ChatItem = ({content, role }: {content:string, role:"user" | "assistant"})
     display: "flex",
     p: 2,
     bgcolor: "#004s5612",
-    my:2,
+    borderRadius: 2,
+    my:1,
     gap: 2,
   }}>
     <Avatar  sx={{
@@ -78,6 +79,7 @@ const ChatItem = ({content, role }: {content:string, role:"user" | "assistant"})
     display: "flex",
     p: 2,
     bgcolor: "#004d56",
+    borderRadius: 2,
     my:2,
     gap: 2,
   }}>
