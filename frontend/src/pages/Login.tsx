@@ -29,8 +29,7 @@ const Login = () => {
     if(auth?.user){
        return navigate("/chat")
     }
-    return () => { 
-    }
+    
   }, [auth])
   
   return (
