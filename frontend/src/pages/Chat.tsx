@@ -169,7 +169,6 @@ const Chat = () => {
         <div
         style={{
           width: "100%",
-          padding: "20px",
           borderRadius: 8,
           backgroundColor: "rgb(17,27,39)",
           display: "flex",
@@ -181,7 +180,7 @@ const Chat = () => {
           type="text" placeholder="Type a message..." style={{
           width: "100%",
           backgroundColor: "transparent",
-          padding: "10px",
+          padding: "30px",
           border: "none",
           outline: "none",
           color: "white",
@@ -194,6 +193,7 @@ const Chat = () => {
           
           ml : "auto",
           color: "white",
+          mx : 1
         }}>
           <IoMdSend />
         </IconButton>
